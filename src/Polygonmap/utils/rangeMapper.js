@@ -2,18 +2,26 @@ import Colormap from 'colormap';
 
 class RangeMapper {
     /**
-     * @param {*} rangesCount count of ranges
-     * @param {*} maxPointsCount max points
-     * @param {*} colormap type of colormap
+     * @param {Number} rangesCount count of ranges
+     * @param {Number} maxPointsCount max points
+     * @param {String} colormap type of colormap
+     * @param {String} format hex || rgbaString
+     * @param {Number|Array} alpha alpha chanel
      */
-    constructor(rangesCount, maxPointsCount, colormap = 'cdom') {
+    constructor(rangesCount = 10, maxPointsCount, colormap = 'cdom', format = 'rgbaString', alpha = 0.7) {
         this._rangesCount = rangesCount;
-        this._maxPointsCount = maxPointsCount;
+
+        if (maxPointsCount && typeof maxPointsCount === 'number' && maxPointsCount > 0) {
+            this._maxPointsCount = maxPointsCount;
+        } else {
+            throw new Error('Wrong "maxPointsCount" value');
+        }
+
         this._colors = Colormap({
             colormap: colormap,
             nshades: this._rangesCount,
-            format: 'hex',
-            alpha: 1
+            format: format,
+            alpha: alpha
         }).reverse();
 
         this._ranges = this._createRangesArray();
@@ -29,6 +37,10 @@ class RangeMapper {
         arr.push(this._maxPointsCount + 1);
 
         return arr;
+    }
+
+    getColorMap() {
+        return this._colors;
     }
 
     getColor(pointsCount) {
