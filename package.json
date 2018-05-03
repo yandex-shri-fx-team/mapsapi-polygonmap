@@ -59,6 +59,7 @@
     "url": "https://github.com/yandex-shri-fx-team/mapsapi-polygonmap/issues"
   },
   "dependencies": {
+    "colormap": "^2.3.0",
     "robust-point-in-polygon": "^1.0.3"
   }
 }
