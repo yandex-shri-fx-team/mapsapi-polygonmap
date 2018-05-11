@@ -5,6 +5,7 @@ import defaultOnMouseLeave from './utils/defaultOnMouseLeave';
 import defaultBalloonContent from './utils/defaultBalloonContent';
 import inside from './utils/inside';
 import Colorize from './utils/colorize/index';
+import OptionsManager from './utils/optionsManager/index';
 
 /**
  * Polygonmap module.
@@ -15,9 +16,8 @@ import Colorize from './utils/colorize/index';
  */
 ymaps.modules.define('Polygonmap', [
     'meta',
-    'option.Manager',
     'ObjectManager'
-], (provide, meta, OptionManager, ObjectManager) => {
+], (provide, meta, ObjectManager) => {
     class Polygonmap {
         /**
          * @param {Object} [data] Polygons and points.
@@ -26,7 +26,7 @@ ymaps.modules.define('Polygonmap', [
          * @param {Object} [options] Options for customization.
          */
         constructor(data, options) {
-            const defaultOptions = new OptionManager({
+            const defaultOptions = {
                 mapper: defaultMapper,
                 color: {
                     rangesCount: 10,
@@ -37,9 +37,10 @@ ymaps.modules.define('Polygonmap', [
                 onMouseEnter: defaultOnMouseEnter,
                 onMouseLeave: defaultOnMouseLeave,
                 balloonContent: defaultBalloonContent
-            });
+            };
 
-            this.options = new OptionManager(options, defaultOptions);
+            this.options = new OptionsManager(defaultOptions, options);
+
             const mapper = this.options.get('mapper');
             this.options.set('mapper', mapper.bind(this));
             this.setData(data);
